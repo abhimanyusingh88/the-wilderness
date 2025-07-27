@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEditCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
-export function useEditCabin(onCloseModal)
+export function useEditCabin()
 {
     const queryClient= useQueryClient();
     const { mutate:editCabin, isLoading:isEditing} = useMutation({
@@ -14,7 +14,7 @@ export function useEditCabin(onCloseModal)
             queryKey: ["cabin"],
           });
         //   reset();
-          if (onCloseModal) onCloseModal();
+          // if (onCloseModal) onCloseModal();
           
         },
         onError: (err) => toast.error(err.message),

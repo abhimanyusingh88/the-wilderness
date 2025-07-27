@@ -14,7 +14,7 @@ import FormRow from "../../ui/FormRow"; // ✅ Your custom component
 import { useCreateCabin } from "./useCreateCabin";
 import { useEditCabin } from "./useEditCabin";
 
-function CreateCabinForm({ cabinToEdit={},onCloseModal }) {
+function CreateCabinForm({ cabinToEdit={},onClosingModal }) {
   const { id: editId, ...editValues } = cabinToEdit ?? {}; // ✅ Safe destructuring
   const isEditSession = Boolean(editId);
 
@@ -31,14 +31,21 @@ function CreateCabinForm({ cabinToEdit={},onCloseModal }) {
     defaultValues: isEditSession ? editValues : {},
   });
    const [createCabin,isCreating]= useCreateCabin(reset);
-   const [editCabin,isEditing]= useEditCabin(onCloseModal);
+   const [editCabin,isEditing]= useEditCabin();
   
   
   const working= isCreating|| isEditing;
 
   function onSubmit(data) {
     const image= typeof data.image==="string"?data.image:data.image[0];
-    if(isEditSession) editCabin({newCabinData:{...data,image:image},id:editId});
+    if(isEditSession) editCabin({newCabinData:{...data,image:image},id:editId}, 
+      {
+     onSuccess: () => {
+
+          reset(); // ✅ Removed unused `data`
+          onClosingModal?.();
+        },
+    });
     else
     // console.log(data);
     createCabin(
@@ -46,6 +53,8 @@ function CreateCabinForm({ cabinToEdit={},onCloseModal }) {
   {
     onSuccess: () => {
       reset(); // reset the form on success
+      onClosingModal?.();
+
     }
   }
 );
@@ -57,7 +66,8 @@ function CreateCabinForm({ cabinToEdit={},onCloseModal }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type={onClosingModal ? "modal" : "regular"}
+   >
       <FormRow label="Cabin name" htmlForId="name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -131,7 +141,16 @@ function CreateCabinForm({ cabinToEdit={},onCloseModal }) {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset" disabled={working}>
+        <Button
+  variation="secondary"
+  type="reset"
+  disabled={working}
+  onClick={() => {
+    // onCloseModal?.();
+    onClosingModal?.();
+  }}
+>
+
           Cancel
         </Button>
         <Button disabled={working}>
@@ -154,6 +173,7 @@ CreateCabinForm.propTypes = {
     image: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   }),
   onCloseModal: PropTypes.func, // ✅ new prop
+   onClosingModal: PropTypes.func,
 };
 
 export default CreateCabinForm;

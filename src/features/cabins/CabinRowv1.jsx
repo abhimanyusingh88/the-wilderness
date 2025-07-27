@@ -7,13 +7,13 @@ import { formatCurrency } from "../../utils/helpers";
 // import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./useDeleteCabin";
-import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
-// import { FaEdit } from "react-icons/fa";
+import {  HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import { FaEdit } from "react-icons/fa";
 import { useCreateCabin } from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
+// import Menus from "../../ui/Menus";
 
 // const TableRow = styled.div`
 //   display: grid;
@@ -87,32 +87,27 @@ function CabinRow({ cabin }) {
           <span>&mdash;</span>
         )}
         <div>
-          {/* <button onClick={handleDuplicate}>
+          <button onClick={handleDuplicate}>
             <HiSquare2Stack />
-          </button> */}
+          </button>
 
           <Modal>
-             <Menus.Menu>
-            <Menus.Toggle id={cabinId}/>
-            <Menus.List id= {cabinId}>
-              <Menus.Button icon={<HiSquare2Stack/>} onClick={handleDuplicate}>Duplicate</Menus.Button>
-               <Modal.Open opens="edit">
-              <Menus.Button icon={<HiPencil/>}>Edit</Menus.Button>
-            </Modal.Open>
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash/>}>Delete</Menus.Button>
-            </Modal.Open>
-              {/* <Menus.Button icon={<HiTrash/>}>Delete</Menus.Button> */}
-            </Menus.List>
-    
             {/* ✅ EDIT CABIN */}
-           
+            <Modal.Open opens="edit">
+              <button>
+                <FaEdit />
+              </button>
+            </Modal.Open>
             <Modal.Window name="edit">
               <CreateCabinForm cabinToEdit={cabin} />
             </Modal.Window>
 
             {/* ✅ DELETE CABIN */}
-            
+            <Modal.Open opens="delete">
+              <button>
+                <HiTrash />
+              </button>
+            </Modal.Open>
             <Modal.Window name="delete">
               <ConfirmDelete
                 resourceName="cabin"
@@ -121,10 +116,15 @@ function CabinRow({ cabin }) {
                 // ✅ No need to pass onClosingModal manually because Modal.Window injects it
               />
             </Modal.Window>
-          </Menus.Menu>
-
           </Modal>
-         
+          {/* <Menus.Menu>
+            <Menus.Toggle id={cabinId}/>
+            <Menus.List id= {cabinId}>
+              <Menus.Button icon={<HiSquare2Stack/>} onClick={handleDuplicate}>Duplicate</Menus.Button>
+              <Menus.Button icon={<HiPencil/>}>Edit</Menus.Button>
+              <Menus.Button icon={<HiTrash/>}>Delete</Menus.Button>
+            </Menus.List>
+          </Menus.Menu> */}
         </div>
         {/* You can render more values like name, price, etc., here */}
       </Table.Row>

@@ -3,30 +3,33 @@ import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 // import { getCabins } from "../services/apiCabins";
 import CabinTable from "../features/cabins/CabinTable";
-import Button from "../ui/Button";
-import { useState } from "react";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import AddCabin from "../features/cabins/Addcabin";
+import CabinTableOperations from "../features/cabins/CabinTableOperations";
+// import Button from "../ui/Button";
+// import { useState } from "react";
+// import CreateCabinForm from "../features/cabins/CreateCabinForm";
 
 function Cabins() {
-  const [showForm,setShowForm]=useState(false);
-  console.log(showForm);
+  // const [showForm,setShowForm]=useState(false);
+  // console.log(showForm);
 //   useEffect(function()
 // {
 //   getCabins().then((data)=>console.log(data));
 // },[])
   return (
-    <>
+    <div>
     <Row type="horizontal">
       <Heading as="h1">All cabins</Heading>
-      <p>filter/sort</p>
+      <CabinTableOperations/>
+      
 
     </Row>
     <Row>
       <CabinTable/>
-      <Button onClick={()=>setShowForm((show)=>!show)}>{ !showForm?"Add New Cabin" : "close form"}</Button>
-      {showForm && <CreateCabinForm/>}
+      <AddCabin/>
+      
     </Row>
-    </>
+    </div>
   );
 }
 

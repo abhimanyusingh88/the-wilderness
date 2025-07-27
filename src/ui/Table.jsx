@@ -1,4 +1,7 @@
+import { createContext, useContext } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+// import Empty from "./Empty";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -38,7 +41,7 @@ const StyledRow = styled(CommonRow)`
 
 const StyledBody = styled.section`
   margin: 0.4rem 0;
-`;
+ `;
 
 const Footer = styled.footer`
   background-color: var(--color-grey-50);
@@ -58,3 +61,77 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+
+const TableContext = createContext();
+
+function Table({ columns, children }) {
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable role="table">{children}</StyledTable>
+    </TableContext.Provider>
+  );
+}
+
+function Header({ children }) {
+  const { columns } = useContext(TableContext);
+  return (
+    <StyledHeader role="row" columns={columns} as="header">
+      {children}
+    </StyledHeader>
+  );
+}
+
+function Row({ children }) {
+  const { columns } = useContext(TableContext);
+  return (
+    <StyledRow role="row" columns={columns}>
+      {children}
+    </StyledRow>
+  );
+}
+
+function Body({ data,render }) {
+  if(data.length===0) 
+  {
+    return <Empty>No data at the moment</Empty>
+  }
+  return (
+    <StyledBody>{data.map(render)}</StyledBody>
+  )
+}
+
+// ✅ Attach subcomponents
+Table.Header = Header;
+Table.Body = Body;
+Table.Row = Row;
+Table.Footer = Footer;
+
+export default Table;
+
+// ✅ ✅ ✅ PROP TYPES VALIDATION BELOW ✅ ✅ ✅
+
+Table.propTypes = {
+  columns: PropTypes.string.isRequired, // grid-template-columns value (e.g., "1fr 2fr 1fr")
+  children: PropTypes.node.isRequired,  // all inner JSX
+};
+
+Header.propTypes = {
+  children: PropTypes.node.isRequired,  // header row content (JSX)
+};
+
+Row.propTypes = {
+  children: PropTypes.node.isRequired,  // row content (JSX)
+};
+
+// Body.propTypes = {
+//   children: PropTypes.node, // optional, since Body is not implemented yet
+// };
+
+Footer.propTypes = {
+  children: PropTypes.node, // optional, can be empty (auto-hidden)
+};
+Body.propTypes = {
+  data: PropTypes.array.isRequired,      // must be an array (e.g., list of rows)
+  render: PropTypes.func.isRequired,     // must be a function that returns JSX for each item
+};
+

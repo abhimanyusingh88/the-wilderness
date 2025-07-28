@@ -1,6 +1,34 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
+// ✅ FIXED: Now returns data properly
+export async function getBookings({filter,sortBy}) {
+  let query=supabase
+    .from("bookings")
+    .select("*, cabins(*), guests(*)");
+  // const { data, error } = await 
+  if(filter)
+  {
+    query= query.eq(filter.field,filter.value);
+  }
+  //sort
+  if(sortBy)
+  {
+    query = query.order(sortBy.field,{ascending: sortBy.direction==="asc"});
+  }
+
+  // console.log(data);
+  const { data, error } = await query;
+
+
+  if (error) {
+    console.log(error);
+    throw new Error("Bookings could not be Loaded");
+  }
+
+  return data; // ✅ ADDED RETURN (previously missing)
+}
+
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")

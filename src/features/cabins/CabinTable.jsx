@@ -31,7 +31,7 @@ import { useSearchParams } from "react-router-dom";
 //   padding: 1.6rem 2.4rem;
 // `;
 function CabinTable() {
-  const [isLoading, cabins] = useCabinTable();
+  const {isLoading, cabins} = useCabinTable();
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;

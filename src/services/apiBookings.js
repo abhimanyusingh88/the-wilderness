@@ -2,10 +2,10 @@ import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 // ✅ FIXED: Now returns data properly
-export async function getBookings({filter,sortBy}) {
+export async function getBookings({filter,sortBy,Page}) {
   let query=supabase
     .from("bookings")
-    .select("*, cabins(*), guests(*)");
+    .select("*, cabins(*), guests(*)",{count:"exact"});
   // const { data, error } = await 
   if(filter)
   {
@@ -16,9 +16,16 @@ export async function getBookings({filter,sortBy}) {
   {
     query = query.order(sortBy.field,{ascending: sortBy.direction==="asc"});
   }
+  const PAGE_SIZE=10;
+  if(Page)
+  {
+    const from=  (Page-1)*PAGE_SIZE;
+    const to= from+PAGE_SIZE-1;
+    query= query.range(from,to)
+  }
 
   // console.log(data);
-  const { data, error } = await query;
+  const { data, error,count } = await query;
 
 
   if (error) {
@@ -26,7 +33,7 @@ export async function getBookings({filter,sortBy}) {
     throw new Error("Bookings could not be Loaded");
   }
 
-  return data; // ✅ ADDED RETURN (previously missing)
+  return {data,count}; // ✅ ADDED RETURN (previously missing)
 }
 
 export async function getBooking(id) {
@@ -45,12 +52,17 @@ export async function getBooking(id) {
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
+import { endOfDay, formatISO } from "date-fns";
+
 export async function getBookingsAfterDate(date) {
+  const startDate = new Date(date); // make sure it's a Date object
+  const endDate = endOfDay(new Date()); // end of today
+
   const { data, error } = await supabase
     .from("bookings")
     .select("created_at, totalPrice, extrasPrice")
-    .gte("created_at", date)
-    .lte("created_at", getToday({ end: true }));
+    .gte("created_at", startDate.toISOString())
+    .lte("created_at", endDate.toISOString());
 
   if (error) {
     console.error(error);
@@ -59,6 +71,7 @@ export async function getBookingsAfterDate(date) {
 
   return data;
 }
+
 
 // Returns all STAYS that are were created after the given date
 export async function getStaysAfterDate(date) {

@@ -7,5 +7,5 @@ export function useCabinTable()
         queryKey:['cabin'],
         queryFn: getCabins
       });
-      return [isLoading,cabins];
+      return {isLoading,cabins};
 }

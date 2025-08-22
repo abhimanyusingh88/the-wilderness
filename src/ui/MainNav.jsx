@@ -54,7 +54,7 @@ function MainNav()
     <nav>
       <NavList>
         <li><StyledNavLink to='/dashboard'><HiOutlineHome/> Home</StyledNavLink></li>
-         <li><StyledNavLink to='/bookings'><HiOutlineCalendarDays/> Bookigs</StyledNavLink></li>
+         <li><StyledNavLink to='/bookings'><HiOutlineCalendarDays/> Bookings</StyledNavLink></li>
          <li><StyledNavLink to='/cabins'><HiOutlineHomeModern/> Cabins</StyledNavLink></li>
          <li><StyledNavLink to='/users'><HiOutlineUsers/> Users</StyledNavLink></li>
          <li><StyledNavLink to='/settings'><HiOutlineCog6Tooth/> Settings</StyledNavLink></li>

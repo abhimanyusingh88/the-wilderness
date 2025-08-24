@@ -57,7 +57,7 @@ function prepareData(startData, stays) {
 }
 
 function DurationChart({ confirmedStays }) {
-  console.log(confirmedStays);
+  // console.log(confirmedStays);
   const data = prepareData(startDataLight, confirmedStays);
 
   return (

@@ -26,7 +26,8 @@ const StyledSalesChart = styled(DashboardBox)`
   scrollbar-width: none;
 
   & .recharts-surface {
-    stroke: none;
+    /* stroke: none; */
+    outline: none;
   }
 `;
 

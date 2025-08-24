@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
-import Heading from "../../ui/Heading";
-import Row from "../../ui/Row";
-
+import Row from "../../ui/Row"
+// import { Heading } from "lucide-react";
+import Heading from "../../ui/Heading"
+import { useTodayActivity } from "./useTodayActivity";
+import Spinner from "../../ui/Spinner";
+import TodayItem from "./TodayItem";
 const StyledToday = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
@@ -35,15 +38,28 @@ const NoActivity = styled.p`
   font-weight: 500;
   margin-top: 0.8rem;
 `;
-
-function Today() {
-  return (
-    <StyledToday>
+function TodayActivity()
+{
+  const {isLoading,activities}= useTodayActivity();
+  return <StyledToday>
       <Row type="horizontal">
         <Heading as="h2">Today</Heading>
       </Row>
-    </StyledToday>
-  );
-}
+      {!isLoading ? (
+        activities?.length > 0 ? (
+          <TodayList>
+            {activities.map((activity) => (
+              <TodayItem activity={activity} key={activity.id} />
+            ))}
+          </TodayList>
+        ) : (
+          <NoActivity>No activity today...</NoActivity>
+        )
+      ) : (
+        <Spinner />
+      )}
 
-export default Today;
+    
+  </StyledToday>
+}
+export default TodayActivity;

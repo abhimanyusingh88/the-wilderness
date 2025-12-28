@@ -7,8 +7,11 @@ const StyledLogo = styled.div`
 
 const Img = styled.img`
   height: 9.6rem;
-  width: auto;
+  width: 9.6rem;
+  border-radius: 50%;
+  object-fit: cover;
 `;
+
 
 function Logo() {
   const [isDark, setIsDark] = useState(

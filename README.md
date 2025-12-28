@@ -1,8 +1,6 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+this is hotel administration website , for my one of hotel web application (Paradise),
+made with react js to handle all the bookings and cabin management.
+Powered with next auth and google auth provider for secure authentication and authorization.
+Used react query for data fetching and caching with modern react router for better routing services.
+Also implemented dark and light mode for better UX.
+Dashboard analytics using react charts for better booking data visualization.
